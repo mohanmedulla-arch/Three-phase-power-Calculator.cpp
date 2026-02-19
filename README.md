@@ -1,0 +1,1 @@
+This project is a Three-Phase Power Calculator designed for Electrical Engineering applications. It supports Star and Delta configurations and calculates active (P), Reactive (Q) and Apparent (S) power.
