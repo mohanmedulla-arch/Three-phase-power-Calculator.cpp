@@ -1,0 +1,103 @@
+#include <iostream>
+#include <cmath>
+#include <string>
+#include <iomanip>
+
+using namespace std;
+
+// Constants
+const double PI = 3.14159265358979323846;
+
+class ThreePhaseSystem {
+private:
+    double lineVoltage;
+    double phaseVoltage;
+    double lineCurrent;
+    double phaseCurrent;
+    double powerFactor;
+    double phi; // phase angle
+
+    bool isDelta;
+
+public:
+    ThreePhaseSystem() : lineVoltage(0), lineCurrent(0), powerFactor(0), isDelta(false) {}
+
+    void inputParameters() {
+        int choice;
+        cout << "--- Three-Phase Power Calculator ---" << endl;
+        cout << "Select Load Connection Type:" << endl;
+        cout << "1. Star (Wye)" << endl;
+        cout << "2. Delta" << endl;
+        cout << "Choice: ";
+        cin >> choice;
+
+        isDelta = (choice == 2);
+
+        cout << "Enter Line-to-Line Voltage (V_L) in Volts: ";
+        cin >> lineVoltage;
+        cout << "Enter Line Current (I_L) in Amps: ";
+        cin >> lineCurrent;
+        cout << "Enter Power Factor (0 to 1): ";
+        cin >> powerFactor;
+
+        // Basic validation
+        if (powerFactor < 0 || powerFactor > 1) {
+            cout << "Warning: Invalid Power Factor. Setting to 1.0 (Resistive)." << endl;
+            powerFactor = 1.0;
+        }
+
+        calculatePhaseValues();
+    }
+
+    void calculatePhaseValues() {
+        phi = acos(powerFactor); // Angle in radians
+
+        if (isDelta) {
+            // Delta: V_phase = V_line, I_phase = I_line / sqrt(3)
+            phaseVoltage = lineVoltage;
+            phaseCurrent = lineCurrent / sqrt(3.0);
+        } else {
+            // Star: V_phase = V_line / sqrt(3), I_phase = I_line
+            phaseVoltage = lineVoltage / sqrt(3.0);
+            phaseCurrent = lineCurrent;
+        }
+    }
+
+    void displayResults() {
+        // Calculations for P, Q, S
+        // Formula: S = sqrt(3) * V_L * I_L
+        double S = sqrt(3.0) * lineVoltage * lineCurrent; // Apparent Power (VA)
+        double P = S * powerFactor;                       // Active Power (W)
+        double Q = S * sin(phi);                          // Reactive Power (VAR)
+
+        cout << fixed << setprecision(2);
+        cout << "\n========================================" << endl;
+        cout << "       3-PHASE CALCULATION RESULTS      " << endl;
+        cout << "========================================" << endl;
+        cout << "Connection:      " << (isDelta ? "Delta (D)" : "Star (Y)") << endl;
+        cout << "----------------------------------------" << endl;
+        cout << "Phase Voltage:   " << phaseVoltage << " V" << endl;
+        cout << "Phase Current:   " << phaseCurrent << " A" << endl;
+        cout << "----------------------------------------" << endl;
+        cout << "Active Power (P):    " << P << " W" << endl;
+        cout << "Reactive Power (Q):  " << Q << " VAR" << endl;
+        cout << "Apparent Power (S):  " << S << " VA" << endl;
+        cout << "Phase Angle (phi):   " << (phi * 180.0 / PI) << " degrees" << endl;
+        cout << "========================================" << endl;
+    }
+};
+
+int main() {
+    char repeat;
+    do {
+        ThreePhaseSystem calc;
+        calc.inputParameters();
+        calc.displayResults();
+
+        cout << "\nPerform another calculation? (y/n): ";
+        cin >> repeat;
+        system("cls"); // Clears screen for next run (Windows specific)
+    } while (repeat == 'y' || repeat == 'Y');
+
+    return 0;
+}
