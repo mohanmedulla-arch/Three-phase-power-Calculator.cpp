@@ -3,9 +3,13 @@ THREE-PHASE POWER CALCULATOR
 A C++ Engineering Project
 
 Author: MOHAMED ABDULLAHI ABDI
+
 Registration Number: FEE3/2701/2025
+
 Department: Department of Electrical and Information Engineering
+
 Institution: The University of Nairobi
+
 Email: fee327012025@students.uonbi.ac.ke
 
 1. PROJECT DESCRIPTION
@@ -220,8 +224,12 @@ The project reflects practical understanding of:
 
 
 Author:
+
 MOHAMED ABDULLAHI ABDI
+
 FEE3/2701/2025
+
 Department of Electrical and Information Engineering
+
 The University of Nairobi
 
